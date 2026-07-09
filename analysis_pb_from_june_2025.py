@@ -18,6 +18,9 @@ from navina_da_utils.utils.data_loading import load_from_snowflake, load_from_po
 import pandas as pd
 from datetime import datetime, date, timedelta
 
+# %%
+print("hi")
+
 # %% [markdown]
 # # Patient Base Scheduling Analysis
 #
