@@ -131,7 +131,8 @@ if __name__ == "__main__":
     print("\nSection 1 OK — data loaded and validated.")
 
 # %%
-df.shape
+print(f"Shape: {df.shape}")
+print(f"Columns: {list(df.columns)}")
 
 # %%
 """
