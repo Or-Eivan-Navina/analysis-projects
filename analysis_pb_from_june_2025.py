@@ -1031,3 +1031,7 @@ def scatter_method(df_method, method_num, method_name):
 
 scatter_method(wp[wp.method == 1], 1, "Anchor Dates Based")
 scatter_method(wp[wp.method == 2], 2, "Freshness Based")
+
+# %%
+# mock change made directly in the notebook
+print("hello from teammate edit")
