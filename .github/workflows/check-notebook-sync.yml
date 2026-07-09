@@ -24,11 +24,11 @@ jobs:
       - name: Install jupytext
         run: pip install "jupytext[toml]"
 
-      - name: Run jupytext sync
+      - name: Regenerate .py from notebooks
         run: |
-          find . -name '*.ipynb' -not -path './.venv/*' -exec jupytext --sync {} +
+          find . -name '*.ipynb' -not -path './.venv/*' -exec jupytext --to py:percent {} +
 
-      - name: Check for stale .py files
+      - name: Check for differences
         run: |
           if ! git diff --exit-code --name-only '*.py'; then
             echo ""
@@ -36,6 +36,7 @@ jobs:
             echo "ERROR: .py files are out of sync with .ipynb"
             echo "=============================================="
             echo ""
+            echo "The committed .py does not match the notebook."
             echo "Please run locally:"
             echo "  jupytext --sync *.ipynb"
             echo "  git add *.py"
