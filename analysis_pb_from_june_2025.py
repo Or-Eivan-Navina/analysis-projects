@@ -18,6 +18,11 @@ from navina_da_utils.utils.data_loading import load_from_snowflake, load_from_po
 import pandas as pd
 from datetime import datetime, date, timedelta
 
+# %% [markdown]
+# # Patient Base Scheduling Analysis
+#
+# Comparing cadence-based vs freshness-based scheduling strategies for Patient Base runs.
+
 # %%
 """
 Section 1 — Load & validate encounter data
@@ -1034,5 +1039,6 @@ scatter_method(wp[wp.method == 1], 1, "Anchor Dates Based")
 scatter_method(wp[wp.method == 2], 2, "Freshness Based")
 
 # %%
-# mock change made directly in the notebook
-print("hello from teammate edit")
+# Updated: added timestamp to output
+from datetime import datetime
+print(f"Analysis last run: {datetime.now()}")
