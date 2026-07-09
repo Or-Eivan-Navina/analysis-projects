@@ -1,0 +1,56 @@
+name: Check notebook sync
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**.ipynb"
+      - "**.py"
+      - "pyproject.toml"
+
+jobs:
+  notebook-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install jupytext
+        run: pip install "jupytext[toml]"
+
+      - name: Run jupytext sync
+        run: |
+          find . -name '*.ipynb' -not -path './.venv/*' -exec jupytext --sync {} +
+
+      - name: Check for stale .py files
+        run: |
+          if ! git diff --exit-code --name-only '*.py'; then
+            echo ""
+            echo "=============================================="
+            echo "ERROR: .py files are out of sync with .ipynb"
+            echo "=============================================="
+            echo ""
+            echo "Please run locally:"
+            echo "  jupytext --sync *.ipynb"
+            echo "  git add *.py"
+            echo "  git commit -m 'Sync .py with notebook changes'"
+            echo ""
+            exit 1
+          fi
+
+      - name: Check for untracked .py files
+        run: |
+          UNTRACKED=$(git ls-files --others --exclude-standard '*.py')
+          if [ -n "$UNTRACKED" ]; then
+            echo "ERROR: New .py files generated but not committed:"
+            echo "$UNTRACKED"
+            echo ""
+            echo "Run: jupytext --sync *.ipynb && git add *.py"
+            exit 1
+          fi
+          echo "All .py files are in sync with their notebooks."
